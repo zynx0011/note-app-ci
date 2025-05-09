@@ -10,7 +10,7 @@ const Hero = () => {
       <div className="absolute inset-0 bg-black bg-opacity-70" />
       <div className="relative z-10 w-full max-w-[860px] text-center text-white">
         <h1 className="text-4xl font-black md:text-5xl">
-          FIND MY NOTES With Kunal
+          FIND MY NOTES With Kunal ("Devops Engineer")
         </h1>
         <p className="mt-5 text-sm font-light md:text-xl md:font-normal">
           Welcome to Find My Notes App Depolyed By Kunal– where students unite
