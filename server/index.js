@@ -31,7 +31,7 @@ try {
 }
 
 app.get("/", (req, res) => {
-  res.send("Server Is Running Successfully With Express JS Welcome to devops");
+  res.send("Server Is Running Successfully With Express JS Backend");
 });
 
 app.use("/auth", authRoutes);
