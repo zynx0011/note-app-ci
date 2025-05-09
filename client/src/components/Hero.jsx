@@ -13,11 +13,12 @@ const Hero = () => {
           FIND MY NOTES With Kunal
         </h1>
         <p className="mt-5 text-sm font-light md:text-xl md:font-normal">
-          Welcome to Find My Notes – where students unite for effortless
-          organization, access, and sharing of PDF notes. Say goodbye to
-          scattered notebooks; streamline your study routine and embark on a
-          journey to academic excellence. Simplify your student life, make your
-          notes work for you – discover a new era of innovation, start today
+          Welcome to Find My Notes App Depolyed By Kunal– where students unite
+          for effortless organization, access, and sharing of PDF notes. Say
+          goodbye to scattered notebooks; streamline your study routine and
+          embark on a journey to academic excellence. Simplify your student
+          life, make your notes work for you – discover a new era of innovation,
+          start today
         </p>
         <div className="mt-5">
           {/* <Link to="/search">
