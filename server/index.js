@@ -31,7 +31,7 @@ try {
 }
 
 app.get("/", (req, res) => {
-  res.send("Server Is Running Successfully With Express JS");
+  res.send("Server Is Running Successfully With Express JS Welcome");
 });
 
 app.use("/auth", authRoutes);
