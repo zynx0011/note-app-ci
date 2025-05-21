@@ -1,0 +1,98 @@
+pipeline {
+    agent any
+    environment {
+        DOCKERHUB_USERNAME = "zynx01"
+        APP_NAME = "server"
+        IMAGE_TAG = "v2-${BUILD_NUMBER}"
+        IMAGE_NAME = "${DOCKERHUB_USERNAME}/${APP_NAME}"
+        REGISTRY_CREDS = 'docker'
+        BRANCH = "main"
+    }
+    
+    stages {
+
+        stage('Cleanup Workspace') {
+            steps {
+                cleanWs()
+            }
+        }
+        
+        stage('Checkout SCM') {
+            steps {
+                git branch: BRANCH, 
+                credentialsId: 'git-cred', 
+                url: 'https://github.com/zynx0011/note-app-ci.git'
+            }
+        }
+
+        stage('Build Docker Image') {
+            steps {
+                dir('server'){
+                script {
+                    
+                    sh "docker build -t ${IMAGE_NAME}:${IMAGE_TAG} ."
+                    sh "docker tag ${IMAGE_NAME}:${IMAGE_TAG} ${IMAGE_NAME}:latest"
+                }
+                }
+            }
+        }
+        
+        stage('Push Image to DockerHub') {
+            steps {
+                withCredentials([usernamePassword(credentialsId: 'docker', passwordVariable: 'pass', usernameVariable: 'user')]) {
+                    sh """
+                        echo ${pass} | docker login --username ${user} --password-stdin
+                        docker push ${IMAGE_NAME}:${IMAGE_TAG}
+                        docker push ${IMAGE_NAME}:latest
+                    """
+                }
+            }
+        }
+    
+
+        stage('Delete Local Images') {
+            steps {
+                sh "docker rmi ${IMAGE_NAME}:${IMAGE_TAG} || true"
+                sh "docker rmi ${IMAGE_NAME}:latest || true"
+            }
+        }
+
+        stage('Update Kubernetes Deployment') {
+            steps {
+                script {
+                    withCredentials([usernamePassword(
+                        credentialsId: 'git-cred',
+                        passwordVariable: 'GIT_PASSWORD',
+                        usernameVariable: 'GIT_USERNAME' )])
+                    {
+                        sh """
+                    # Clone repository
+                    git clone -b ${BRANCH} https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/zynx0011/note-app-cd.git
+                    cd note-app-cd/K8s/charts/templates/
+                    
+                    # Show current image tag
+                    echo "Current image in Server.yaml:"
+                    grep "image:" Server.yaml
+                    
+                    # Update image tag (match exactly what's in the file)
+                    sed -i 's|image: "zynx01/server:v2.*"|image: "zynx01/server:v2-'"${BUILD_NUMBER}"'"|g' Server.yaml
+                    
+                    # Verify change
+                    echo "Updated image in Server.yaml:"
+                    grep "image:" Server.yaml
+                    
+                    # Commit changes
+                    git config user.email  "zrdrc31@gmail.com"
+                    git config user.name  "zynx0011"
+                    git add Server.yaml
+                    git commit -m "CI: Updated image tag to ${IMAGE_TAG} [Build ${BUILD_NUMBER}]"
+                    git push origin ${BRANCH}
+                    
+                    echo "Updated ${BRANCH} branch with new image tag ${IMAGE_TAG} successfully."
+                """
+                    }
+                }
+            }
+        }
+    }
+} 
