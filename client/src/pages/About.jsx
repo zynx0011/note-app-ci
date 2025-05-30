@@ -2,7 +2,7 @@ import React from "react";
 
 const About = () => {
   return (
-    <div className="h-heightWithoutNavbar flex flex-col items-center justify-start p-5 lg:flex-row">
+    <div className="flex h-heightWithoutNavbar flex-col items-center justify-start p-5 lg:flex-row">
       <div className="grid h-full w-full place-content-center">
         <img
           src="./aboutUs.svg"
@@ -16,11 +16,11 @@ const About = () => {
             About Us
           </h1>
           <p className="mt-1 text-[15px] lg:mt-3">
-            Welcome to FindMyNotes, the ultimate hub for students to seamlessly
-            share and access educational resources. Our platform is designed
-            with a singular purpose – to make the exchange of study materials as
-            effortless as possible, fostering a collaborative and enriching
-            academic experience for students across colleges.
+            Welcome to FindMyNotes test, the ultimate hub for students to
+            seamlessly share and access educational resources. Our platform is
+            designed with a singular purpose – to make the exchange of study
+            materials as effortless as possible, fostering a collaborative and
+            enriching academic experience for students across colleges.
           </p>
         </div>
         <div className="">
