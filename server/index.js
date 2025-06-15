@@ -23,12 +23,12 @@ app.use(bodyParser.json());
 app.use(express.json());
 app.use(cookie());
 
-try {
-  mongoose.connect(process.env.MONGODB_URI);
-  console.log("Connection Successfull");
-} catch (error) {
-  console.log(error);
-}
+// try {
+//   mongoose.connect(process.env.MONGODB_URI);
+//   console.log("Connection Successfull");
+// } catch (error) {
+//   console.log(error);
+// }
 
 app.get("/", (req, res) => {
   res.send("Server Is Running Successfully with express ");
